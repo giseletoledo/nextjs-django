@@ -44,12 +44,10 @@ const ContactForm: React.FC = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:8000/api/contactform', {
+      const response = await fetch('/api/contactform', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': 'http://localhost:8000/',
-          'Access-Control-Allow-Headers': '*'
         },
         body: JSON.stringify(formData),
       });
@@ -80,7 +78,7 @@ const ContactForm: React.FC = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit} method='POST'>
+    <form onSubmit={handleSubmit}>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <input
         type="text"
