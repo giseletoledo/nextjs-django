@@ -1,6 +1,5 @@
 # Estudos de integração nextjs com django no backend
 
-## Telas
 Frontend criado com Nextjs na versão 14 com API Route e Django 5.0.6
 * informações detalhadas sobre instalação no readme do frontend 
 
@@ -62,6 +61,7 @@ landing-page/
 - Django 5.0.6
 - Django Rest Framework
 
+
 ### Setup Instructions
 
 Clone the repository
@@ -114,6 +114,7 @@ Run the Next.js development server
 ```
 npm run dev
 ```
+## Telas
 
 <img src="https://github.com/giseletoledo/nextjsdjango/blob/main/imagens/landing-pagenextjs.png" alt="print do topo da tela" />
 <img src="https://github.com/giseletoledo/nextjsdjango/blob/main/imagens/landing_page_footer.png" alt="print do footer" />
