@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
 
-export async function POST(req) {
+export async function POST(req: Request) {
     const body = await req.json();
     
     try {
@@ -12,7 +12,7 @@ export async function POST(req) {
         });
         const data = response.data;
         return NextResponse.json(data, { status: response.status });
-    } catch (error) {
+    } catch (error: any) {
         if (error.response) {
             return NextResponse.json(error.response.data, { status: error.response.status });
         } else {
