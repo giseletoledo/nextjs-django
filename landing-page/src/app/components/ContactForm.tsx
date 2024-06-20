@@ -1,5 +1,9 @@
 'use client'
 import React, { useState } from 'react';
+import Modal from 'react-modal'
+import axios from 'axios';
+
+Modal.setAppElement('#__next');
 
 interface ContactData {
   name: string;
@@ -13,6 +17,7 @@ const ContactForm: React.FC = () => {
   const [message, setMessage] = useState('');
   const [submittedData, setSubmittedData] = useState<ContactData | null>(null);
   const [error, setError] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const validateName = (name: string) => {
     const regex = /^[a-zA-Z\s]+$/;
@@ -44,21 +49,22 @@ const ContactForm: React.FC = () => {
     };
 
     try {
-      const response = await fetch('/api/contactform', {
-        method: 'POST',
+      const response = await axios.post('http://localhost:8000/api/contactform/', formData, {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
       });
 
-      if (response.ok) {
-        const data: ContactData = await response.json();
-        setSubmittedData(data);
+      if (response.status === 201) {
+        setSubmittedData(response.data);
         setError('');
+        setIsModalOpen(true); // Abre o modal
+        // Limpa os campos do formulário
+        setName('');
+        setEmail('');
+        setMessage('');
       } else {
-        const errorData = await response.json();
-        setError(errorData.message || 'Erro ao enviar mensagem.');
+        setError(response.data.message || 'Erro ao enviar mensagem.');
       }
     } catch (error) {
       console.error('Erro ao enviar mensagem:', error);
@@ -66,43 +72,57 @@ const ContactForm: React.FC = () => {
     }
   };
 
-  if (submittedData) {
-    return (
-      <div>
-        <h2>Dados Enviados com Sucesso:</h2>
-        <p>Nome: {submittedData.name}</p>
-        <p>Email: {submittedData.email}</p>
-        <p>Mensagem: {submittedData.message}</p>
-      </div>
-    );
-  }
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
-    <form onSubmit={handleSubmit}>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <input
-        type="text"
-        placeholder="Nome"
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        required
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-      />
-      <textarea
-        placeholder="Mensagem"
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        required
-      ></textarea>
-      <button type="submit">Enviar</button>
-    </form>
+    <>
+      <form onSubmit={handleSubmit}>
+        <h2 className='title'>Entre em Contato</h2>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+
+        <input
+          type="text"
+          placeholder="Nome"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <textarea
+          placeholder="Mensagem"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          required
+        ></textarea>
+        <button type="submit">Enviar</button>
+      </form>
+<div className='modal'>
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={closeModal}
+        contentLabel='Formulário de contato'
+      >
+        <div>
+            <span className="close" onClick={closeModal}>&times;</span>
+            <h2>Dados Enviados com Sucesso</h2>
+            <p>Nome: {submittedData?.name}</p>
+            <p>Email: {submittedData?.email}</p>
+            <p>Mensagem: {submittedData?.message}</p>
+        </div>
+        </Modal>
+        </div>
+    </>
+ 
   );
 };
 
 export default ContactForm;
+

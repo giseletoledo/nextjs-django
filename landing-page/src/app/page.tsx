@@ -7,10 +7,12 @@ import Footer from './components/Footer';
 const HomePage: React.FC = () => {
   return (
     <>
+    <div className='main'>
       <Hero />
       <Items />
       <CallToAction />
       <Footer />
+      </div>
     </>
   );
 };
