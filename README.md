@@ -6,6 +6,8 @@ Frontend criado com Nextjs na versão 14 com API Route e Django 5.0.6
 
 ### Project Structure
 
+```
+
 nextjsdjango/
 backend/
 ├── backend/
@@ -46,6 +48,7 @@ landing-page/
 ├── .gitignore
 ├── README.md
 
+``` 
 
 ### Technologies Used
 
